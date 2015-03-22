@@ -1,0 +1,252 @@
+/*
+
+MM override styles for wrapper
+
+
+*/
+html {
+	overflow: auto;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	line-height:20px; 
+	font-weight:400; 
+	font-style:normal; 
+	color:#000000;
+	font-size:14px;
+}
+	
+h3, .h3 {
+	font-family: 'Droid Serif', serif;
+	line-height:125%;
+	font-weight:700;
+	font-style:italic;
+	color:#001a39;
+	font-size:125%;
+}
+
+.topper {
+	display: inline-block;
+	width: 100%;
+	height: 100px;
+}
+
+.btnLeft {
+	float: left;
+	margin-left: 24px;
+}
+
+.btnRight {
+	float: left;
+	margin-left: 280px;
+}
+
+.btnFar {
+	float: left;
+	margin-left: 480px;
+}
+
+.pageContainer {
+	display: block;
+	width: 1880px;
+	height: 1200px;
+	padding: 12px;
+	background-color: #333;
+}
+
+.mainContainer {
+	display: block;
+	width: 100%;
+}
+
+.settingsContainer {
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 340px;
+	height: 1180px;
+	background-color: #999;
+	padding-left: 12px;
+}
+
+.resultContainer {
+	display: inline-block;
+	position: relative;
+	float: left;
+	width: 540px;
+	height: 1180px;
+	margin-left: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+	background-color: #999;
+}
+
+.loadContainer {
+	display: inline-block;
+	float: left;
+	background-color: #ececec;
+	width: 50%;
+	height: 100%;
+	margin-left: 12px;
+	padding-left: 12px;
+}
+
+.displayContainer {
+	display: block;
+	background-color: #666;
+}
+
+hr .spaceLine {
+	width: 100%;
+	border: solid 2px white;
+	height: 2px;
+}
+
+.sizer  {
+	display: block;
+	width: 60px;
+	height: 100px;
+}
+
+.copyHeading {
+	display: block;
+	width: 300px;
+	height: 40px;
+}
+
+.copyText {
+	display: block;
+	width: 300px;
+	height: 200px;
+	font-style: normal;
+	text-align: left;
+	padding: 0;
+}
+
+#reportCover {
+	width: 145px;
+	height: 195px;
+	background-color: #fff;
+	border: black 1px solid;
+}
+
+#resultByline {
+	width: 300px;
+	height: 36px;
+	background-color: #fff;
+	color: #000;	
+}
+
+#resultHeading {
+	width: 300px;
+	height: 36px;
+	background-color: #fff;
+	color: #000;	
+}
+
+#resultPara1 {
+	width: 450px;
+	height: 200px;
+	background-color: #fff;
+	color: #000;
+}
+
+#resultPara2 {
+	width: 450px;
+	height: 200px;
+	background-color: #fff;
+	color: #000;
+}
+
+#resultPara3 {
+	width: 450px;
+	height: 200px;
+	background-color: #fff;
+	color: #000;
+}
+
+/* optin monster PU styling */
+
+	#optin-canvas #om-canvas-whiteboard-theme-optin {
+		display:inherit;
+	}
+
+	#optin-canvas .mmpu-container {
+		max-width:750px; 
+		background-color:#FFF; 
+		border-bottom:1px solid #cacaca; 
+		font-family: 'Source Sans Pro', sans-serif;
+		color:#000;
+		font-size:14px;
+		/* added padding below to match site */
+		padding-left: 19px;
+		padding-right: 19px;
+		padding-top: 19px;
+	}
+	
+	#optin-canvas .mmpu-footer {
+		max-width:710px; 
+		background-color:#ececec; 
+		font-size:11px; 
+		text-align:center; 
+		padding:20px; 
+		border-top:1px solid white; 
+		font-family: 'Source Sans Pro', sans-serif;
+		color:#000;
+	}
+	
+	#optin-canvas .mmpu-content {
+		max-width:700px; 
+		padding:10px;
+	}
+	
+	#optin-canvas .mmpu-content-text {
+		max-width:450px;
+		font-size:16px;
+	}
+	
+	#optin-canvas .mmpu-content-text-bottom {
+		max-width:700px; 
+		font-weight:bold; 
+		margin-top:20px; 
+		font-size:18px;
+		line-height:20px;
+	}
+	
+	#optin-canvas .mmpu-report-image {
+		float:right; 
+		padding:5px;
+	}
+	
+	#optin-canvas .button { 
+		width: 218px; 
+		height: 50px; 
+		-webkit-border-radius: 6px; 
+		-moz-border-radius: 6px; 
+		border-radius: 6px; 
+		background-color: #959595; 
+		border: solid 1px #0f62a4; 
+		background-image: -webkit-linear-gradient(top, #8fd3ff, #117fc6 5%, #0e477f); 
+		background-image: -moz-linear-gradient(top, #8fd3ff, #117fc6 5%, #0e477f); 
+		background-image: -o-linear-gradient(top, #8fd3ff, #117fc6 5%, #0e477f); 
+		background-image: linear-gradient(to bottom, #8fd3ff, #117fc6 5%, #0e477f); 
+		font-weight:600; 
+		font-size:18px; 
+		color:#FFF; 
+	}
+	
+	#optin-canvas .field { 
+		width: 255px; 
+		height: 49px;
+		-webkit-border-radius: 6px; 
+		-moz-border-radius: 6px; 
+		border-radius: 6px; 
+		background-color: #fff; 
+		-webkit-box-shadow: inset -1px 1px 7px rgba(38,38,38,.29); 
+		-moz-box-shadow: inset -1px 1px 7px rgba(38,38,38,.29); 
+		box-shadow: inset -1px 1px 7px rgba(38,38,38,.29); 
+		border: solid 1px #adacac; 
+		font-size:12px; 
+		padding-left:20px; 
+	}

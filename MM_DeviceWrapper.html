@@ -1,0 +1,156 @@
+<!--
+/******************************* 
+*
+* MM_DeviceWrapper.html
+*
+* wrapper for MM devices display
+*
+********************************/
+-->
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- ajax calls -->
+<script type="text/javascript" src="js/mm_wrapper.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/mm_wrapper-styles.js" charset="utf-8"></script>
+<!-- jquery dev version -->
+<script src="jquery-1.11.2.min.js" charset="utf-8"></script>
+
+<title>MM_Device Wrapper</title>
+
+<script language="javascript">
+	loadFontstyle();
+	loadCSSstyle();
+	loadOverrides();
+</script>
+
+
+</head>
+
+<body style="margin: 24px;">
+
+<div class="topper">
+	<h1>Localhost says MM wrapper</h1>
+	<div class="btnLeft">
+		<button type="button" onclick="resetAllLeftFields()">RESET this</button>
+	</div>
+	<div class="btnRight">
+		<button type="button" onclick="resetAllRightFields()">RESET this</button>
+	</div>
+	<div class="btnFar">
+		<button type="button" onclick="">process</button>
+	</div>
+</div>
+	
+<div class="pageContainer">
+	<div class="mainContainer">
+		<div class="settingsContainer">
+			Set report cover link (url):
+			<div class="copyHeading">
+				<input id="userReportCover" type="text" name="userReportCover" size="40" maxlength="100" placeholder="http://">
+			</div>
+			<br />
+			Set report cover display size:
+			<br />
+			<div class="sizer">
+				<input id="userCoverWide" type="text" name="coverWide" size="5" maxlength="3" placeholder="w (px)"> 
+				<input id="userCoverHigh" type="text" name="coverHigh" size="5" maxlength="3" placeholder="h (px)">
+			</div>
+			<hr class="spaceLine">
+			Set small byline:
+			<br />
+			<div class="copyHeading">
+				<input id="userByline" type="text" name="byline" size="40" maxlength="40" placeholder="byline..."> 
+			</div>
+			<br />
+			Set heading:
+			<br />
+			<div class="copyHeading">
+				<input id="userHeading" type="text" name="heading" size="60" maxlength="60" placeholder="heading..."> 
+			</div>
+			<hr class="spaceLine">
+			Set copy para1:
+			<br />
+			<textarea class="copyText" id="userCopyPara1" name="para1" >
+copy...
+			</textarea>
+			<br />
+			Set copy para2 :
+			<br />
+			<textarea class="copyText" id="userCopyPara2" name="para2" >
+copy...
+			</textarea>
+			<br />
+			Set copy para3:
+			<br />
+			<textarea class="copyText" id="userCopyPara3" name="para3" >
+copy...
+			</textarea>
+			<br />
+		</div><!-- end settingsContainer -->
+
+		<div class="resultContainer">
+			<button onclick="getReportCover(loadUserReportCover(), loadUserCoverWide(), loadUserCoverHigh())">load</button>
+			<img id="reportCover" src=""  width="" height="" alt="Money Morning free report cover"/>
+			<hr class="spaceLine">
+			
+			<button onclick="getByline(loadUserByline())">load</button>
+			<div id="resultByline"> </div>	
+			<br />
+			<button onclick="getHeading(loadUserHeading())">load</button>
+			<div id="resultHeading"> </div>	
+			<hr class="spaceLine">
+			
+			<button onclick="loadUserCopyPara(1)">load</button>
+			<div id="resultPara1"> </div>
+			<br />
+			<button onclick="loadUserCopyPara(2)">load</button>
+			<div id="resultPara2"> </div>
+			<br />
+			<button onclick="loadUserCopyPara(3)">load</button>
+			<div id="resultPara3"> </div>		
+		</div>
+		
+		<div class="loadContainer">
+			<div>
+				<h2>load change:</h2>
+			</div>
+			<button type="button" onclick="clearContentDiv('contentPU')">clear</button> 
+			<button type="button" onclick="loadDevice('contentPU')">OPU</button>
+			<button type="button" onclick="parseForDevice('contentPU')">parse</button>
+			
+			-|- <button type="button" onclick="clearContentDiv('contentSF')">clear</button> 
+			<button type="button" onclick="loadDevice('contentSF')">_SF</button>
+			<button type="button" onclick="parseForDevice('contentSF')">parse</button>
+			
+			-|- <button type="button" onclick="clearContentDiv('contentIF')">clear</button> 
+			<button type="button" onclick="loadDevice('contentIF')">_IF</button>
+			<button type="button" onclick="parseForDevice('contentIF')">parse</button>
+			
+			-|- <button type="button" onclick="clearContentDiv('contentEOA')">clear</button> 
+			<button type="button" onclick="loadDevice('contentEOA')">EOA</button>
+			<button type="button" onclick="parseForDevice('contentEOA')">parse</button>
+			<br />
+			<div id="contentPU">
+				<em>opu waiting...</em>
+			</div>
+			<div id="contentSF">
+				<em>sf waiting...</em>
+			</div>
+			<div id="contentIF">
+				<em>if waiting...</em>
+			</div>
+			<div id="contentEOA">
+				<em>eoa waiting...</em>
+			</div>
+			<br />
+		</div> <!-- end loadContainer -->
+		
+	</div> <!-- end mainContainer -->	
+	
+	<div style="clear:both"></div>
+	
+</div><!-- end pageContainer -->
+</body>
+</html>
