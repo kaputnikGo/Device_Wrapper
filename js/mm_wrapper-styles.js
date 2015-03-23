@@ -14,7 +14,7 @@ var font2url = "http://fonts.googleapis.com/css?family=Open+Sans:300italic,400it
 var style1url = "http://mmau.staging.wpengine.com/wp-content/themes/shoestrap-leadgen/style.css";
 var style2url = "http://mmau.staging.wpengine.com/wp-content/uploads/ss-style.css?ver=1424233318";
 
-var styleOverride1 = "http://127.0.0.1/test/mm-new/mm_overrides.css";
+var styleOverride1 = "mm_overrides.css";
 
 
 function loadFontstyle() {

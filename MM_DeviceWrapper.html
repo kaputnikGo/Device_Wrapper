@@ -31,15 +31,13 @@
 <body style="margin: 24px;">
 
 <div class="topper">
-	<h1>Localhost says MM wrapper</h1>
+	<h1>Local Git says MM wrapper</h1>
 	<div class="btnLeft">
 		<button type="button" onclick="resetAllLeftFields()">RESET this</button>
 	</div>
 	<div class="btnRight">
 		<button type="button" onclick="resetAllRightFields()">RESET this</button>
-	</div>
-	<div class="btnFar">
-		<button type="button" onclick="">process</button>
+		<button type="button" onclick="getAllFields()">load ALL</button>
 	</div>
 </div>
 	
@@ -61,13 +59,13 @@
 			Set small byline:
 			<br />
 			<div class="copyHeading">
-				<input id="userByline" type="text" name="byline" size="40" maxlength="40" placeholder="byline..."> 
+				<input id="userByline" type="text" name="byline" size="60" maxlength="60" placeholder="byline..."> 
 			</div>
 			<br />
 			Set heading:
 			<br />
 			<div class="copyHeading">
-				<input id="userHeading" type="text" name="heading" size="60" maxlength="60" placeholder="heading..."> 
+				<input id="userHeading" type="text" name="heading" size="80" maxlength="80" placeholder="heading..."> 
 			</div>
 			<hr class="spaceLine">
 			Set copy para1:
@@ -91,46 +89,42 @@ copy...
 		</div><!-- end settingsContainer -->
 
 		<div class="resultContainer">
-			<button onclick="getReportCover(loadUserReportCover(), loadUserCoverWide(), loadUserCoverHigh())">load</button>
+			<button onclick="getReportCover()">load</button>
 			<img id="reportCover" src=""  width="" height="" alt="Money Morning free report cover"/>
 			<hr class="spaceLine">
 			
-			<button onclick="getByline(loadUserByline())">load</button>
+			<button onclick="getByline()">load</button>
 			<div id="resultByline"> </div>	
 			<br />
-			<button onclick="getHeading(loadUserHeading())">load</button>
+			<button onclick="getHeading()">load</button>
 			<div id="resultHeading"> </div>	
 			<hr class="spaceLine">
 			
-			<button onclick="loadUserCopyPara(1)">load</button>
+			<button onclick="getParaCopy(1)">load</button>
 			<div id="resultPara1"> </div>
 			<br />
-			<button onclick="loadUserCopyPara(2)">load</button>
+			<button onclick="getParaCopy(2)">load</button>
 			<div id="resultPara2"> </div>
 			<br />
-			<button onclick="loadUserCopyPara(3)">load</button>
+			<button onclick="getParaCopy(3)">load</button>
 			<div id="resultPara3"> </div>		
 		</div>
 		
 		<div class="loadContainer">
 			<div>
-				<h2>load change:</h2>
+				<h2>display device:</h2>
 			</div>
-			<button type="button" onclick="clearContentDiv('contentPU')">clear</button> 
-			<button type="button" onclick="loadDevice('contentPU')">OPU</button>
-			<button type="button" onclick="parseForDevice('contentPU')">parse</button>
-			
-			-|- <button type="button" onclick="clearContentDiv('contentSF')">clear</button> 
-			<button type="button" onclick="loadDevice('contentSF')">_SF</button>
-			<button type="button" onclick="parseForDevice('contentSF')">parse</button>
-			
-			-|- <button type="button" onclick="clearContentDiv('contentIF')">clear</button> 
-			<button type="button" onclick="loadDevice('contentIF')">_IF</button>
-			<button type="button" onclick="parseForDevice('contentIF')">parse</button>
-			
-			-|- <button type="button" onclick="clearContentDiv('contentEOA')">clear</button> 
-			<button type="button" onclick="loadDevice('contentEOA')">EOA</button>
-			<button type="button" onclick="parseForDevice('contentEOA')">parse</button>
+			<input id="userDeviceType" type="radio" name="deviceType" value="contentPU">OPU
+			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
+			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
+			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
+			<br /><br />
+			functions for chosen device:<br/>
+			<button type="button" onclick="clearDeviceContent()">clear</button> 
+			<button type="button" onclick="getDeviceContent()">load</button>
+			<button type="button" onclick="updateDeviceContent()">update</button>
+			<button type="button" onclick="processDeviceContent()">process</button>	
+			<br />
 			<br />
 			<div id="contentPU">
 				<em>opu waiting...</em>

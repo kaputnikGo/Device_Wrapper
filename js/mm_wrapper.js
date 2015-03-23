@@ -7,15 +7,12 @@
 *
 ********************************/
 
-// template file locations
-var deviceFilePU = "templates/MM_2015-template-Optin-PU.html";
-var deviceFileSF = "templates/MM_2015-template-SF.html";
-var deviceFileIF = "templates/MM_2015-template-IF.html";
-var deviceFileEOA = "templates/MM_2015-template-EOA.html";
+/*jslint browser:true*/
+"use strict";
 
 /******************************************************************
 
-// default vars for forms from MM_DeviceWrapper
+// default (global) vars for MM_DeviceWrapper
 // preset parseable to default in cases where a value is necessary
 // should declare these with init values to determine type (int, string, etc.)
 
@@ -27,6 +24,23 @@ function myFunction(x, y) {
 } 
 
 ******************************************************************/
+
+// dev to debug, false for production
+var DEBUG = true;
+
+// template file locations
+var deviceFilePU = "templates/MM_2015-template-Optin-PU.html";
+var deviceFileSF = "templates/MM_2015-template-SF.html";
+var deviceFileIF = "templates/MM_2015-template-IF.html";
+var deviceFileEOA = "templates/MM_2015-template-EOA.html";
+
+// stored version of deviceFile for edits and saves
+var deviceFile = "none";
+var deviceType = "none";
+
+var defaultUserDevice = "contentPU";
+var userSelectedDevice = defaultUserDevice;
+
 var defaultCoverUrl = "templates/defaultCover.png";
 var defaultCoverFileType1 = ".png";
 var defaultCoverFileType2 = ".jpg";
@@ -52,11 +66,45 @@ var setCopyPara2 = defaultCopyPara2;
 var defaultCopyPara3 = "";
 var setCopyPara3 = defaultCopyPara3;
 
-/******************************************/
+/************************************************************************************/
+//
+//
 // UTILITIES
+//
+//
+/************************************************************************************/
 
-function clearContentDiv(elementID) {
-    document.getElementById(elementID).innerHTML = "";
+function logger(message) {
+	if (DEBUG) {
+		console.log(message);
+	}	
+}
+
+function loadSelectedDevice() {
+	// this must load a device
+	userSelectedDevice = document.querySelector('input[id="userDeviceType"]:checked').value;
+	logger(userSelectedDevice);	
+	if (hasVarString(userSelectedDevice))
+		deviceType = userSelectedDevice;
+	else 
+		deviceType = defaultUserDevice;
+}
+
+function readSingleFile(userFile) {
+	var file = userFile.target.files[0];
+	if (!file) {
+		return;
+	}
+	var reader = new FileReader();
+	reader.onload = function(userFile) {
+		var contents = userFile.target.result;
+	};
+	reader.readAsText(file);
+}
+
+function displayContents(contents) {
+	var element = document.getElementById('file-content');
+	element.innerHTML = contents;
 }
 
 function resetAllLeftFields() {
@@ -79,11 +127,15 @@ function resetAllRightFields() {
 }
 
 function isValidNumber(number) {
-	if (number == null) 
+	if (number === null)
 		return false;
 	// not, not a number...
-	else 
+	else
 		return !isNaN(number);
+}
+
+function inParaRange(number) {
+	return (number <= 3 && number >= 1);
 }
 
 function hasVarString(checkable) {
@@ -95,24 +147,131 @@ function hasVarString(checkable) {
 	return checkable != null;
 }
 
-/******************************************/
+function elementIsDefined(checkable) {
+	// checkable null can equal defined...
+	return (typeof checkable != 'undefined');
+}
 
-
-
-/******************************************/
-// COVER IMAGE
-
+/************************************************************************************/
+//
+//
+// FUNCTIONS CALLED FROM HTML (PUBLIC)
+//
+//
+/************************************************************************************/
 
 function getReportCover() {
+	// load form elements first
+	loadUserReportCover();
+	loadUserCoverWide();
+	loadUserCoverHigh();
+	
 	document.getElementById("reportCover").src = setReportCoverUrl;
 	document.getElementById("reportCover").style.width = setCoverWide;
 	document.getElementById("reportCover").style.height = setCoverHigh;
 	
-	console.log(setReportCoverUrl);	
-	console.log(setCoverWide);
-	console.log(setCoverHigh);
+	logger(setReportCoverUrl);	
+	logger(setCoverWide);
+	logger(setCoverHigh);
 }
 
+function getByline() {
+	// allow user to set NO byline (null)
+	// load form element first
+	loadUserByline();
+	
+	logger(setByline);
+	if (hasVarString(setByline)) {
+		document.getElementById("resultByline").innerHTML = setByline;
+	}
+	else 
+		document.getElementById("resultByline").innerHTML = "null";
+}
+
+function getHeading() {
+	// allow user to set NO byline (null)
+	// load form element first	
+	loadUserHeading();
+	
+	if (hasVarString(setHeading)) {
+		document.getElementById("resultHeading").innerHTML = setHeading;
+	}
+	else 
+		document.getElementById("resultHeading").innerHTML = "null";
+}
+
+function getParaCopy(paraNumber) {
+	if (isValidNumber(paraNumber)) {
+		if (inParaRange(paraNumber)) {
+			loadUserCopyPara(paraNumber);
+		}
+	}	
+}
+
+// load all fields assuming the setters have all been set.
+function getAllFields() {
+	//only load elements that have been set, ISSET ?
+	getReportCover();
+	getByline();
+	getHeading();
+	getParaCopy(1);
+	getParaCopy(2);
+	getParaCopy(3);	
+}
+
+function clearDeviceContent() {
+    document.getElementById(devicetype).innerHTML = "";
+}
+
+function getDeviceContent() {
+	loadSelectedDevice();
+	loadDeviceFile();
+	loadDeviceContent();	
+}
+
+function updateDeviceContent() {
+	// in case (?):
+	//loadSelectedDevice();
+	/*
+	// needed?
+	switch (deviceType) {
+		case "contentPU":
+			break;
+		case "contentSF":
+			break;
+		case "contentIF":
+			break;
+		case "contentEOA":
+			break;
+		default:
+			break;
+	}
+	*/	
+	parseForDevice();
+}
+
+function processDeviceContent() {
+	// check have all the content and deviceType
+	
+	// singular point of naming saveFile
+	var timestamp = new Date().getTime();
+	logger(deviceType.concat(timestamp));
+	
+	// will call this at end
+	processDeviceToFile();
+}
+
+/************************************************************************************/
+//
+//
+// INTERNAL FUNCTIONS (PRIVATE)
+//
+//
+/************************************************************************************/
+
+
+/******************************************/
+// COVER IMAGE and SIZE(S)
 function loadUserReportCover() {
 	var candidate = document.getElementById("userReportCover").value;
 	if (candidate == null || candidate == "") {
@@ -147,19 +306,9 @@ function loadUserCoverHigh() {
 	candidate = null;
 }
 
+
 /******************************************/
 // INTRO BY-LINE
-
-function getByline() {
-	// allow user to set NO byline (null)
-	console.log(setByline);
-	if (hasVarString(setByline)) {
-		document.getElementById("resultByline").innerHTML = setByline;
-	}
-	else 
-		document.getElementById("resultByline").innerHTML = "null";
-}
-
 function loadUserByline() {
 	var candidate = document.getElementById("userByline").value;
 	
@@ -175,16 +324,6 @@ function loadUserByline() {
 
 /******************************************/
 // HEADING
-
-function getHeading() {
-	// allow user to set NO byline (null)	
-	if (hasVarString(setHeading)) {
-		document.getElementById("resultHeading").innerHTML = setHeading;
-	}
-	else 
-		document.getElementById("resultHeading").innerHTML = "null";
-}
-
 function loadUserHeading() {
 	var candidate = document.getElementById("userHeading").value;
 	
@@ -199,102 +338,78 @@ function loadUserHeading() {
 
 
 /******************************************/
-
 // LOAD COPY PARAGRAPHS - numbered
-
 function loadUserCopyPara(paraNumber) {
 	var candidate;
-	// set/get range ( 1 - 3 )?
-	if (isValidNumber(paraNumber)) {
-		switch (paraNumber) {
-			case 1:
-				candidate = document.getElementById("userCopyPara1").value;
-				if (hasVarString(candidate)) {
-					setCopyPara1 = candidate;
-				}
-				else {
-					setCopyPara1 = defaultCopyPara1;
-				}
-				break;
-			case 2:
-				candidate = document.getElementById("userCopyPara2").value;
-				if (hasVarString(candidate)) {
-					setCopyPara2 = candidate;
-				}
-				else {
-					setCopyPara2 = defaultCopyPara2;
-				}
-				break;
-			case 3:
-				candidate = document.getElementById("userCopyPara3").value;
-				if (hasVarString(candidate)) {
-					setCopyPara3 = candidate;
-				}
-				else {
-					setCopyPara3 = defaultCopyPara3;
-				}
-				break;
-			default:
-				console.log("No loadUserCopyPara found...");
-		}
-		getCopyPara(paraNumber);
+	switch (paraNumber) {
+		case 1:
+			candidate = document.getElementById("userCopyPara1").value;
+			if (hasVarString(candidate)) {
+				setCopyPara1 = candidate;
+			}
+			else {
+				setCopyPara1 = defaultCopyPara1;
+			}
+			break;
+		case 2:
+			candidate = document.getElementById("userCopyPara2").value;
+			if (hasVarString(candidate)) {
+				setCopyPara2 = candidate;
+			}
+			else {
+				setCopyPara2 = defaultCopyPara2;
+			}
+			break;
+		case 3:
+			candidate = document.getElementById("userCopyPara3").value;
+			if (hasVarString(candidate)) {
+				setCopyPara3 = candidate;
+			}
+			else {
+				setCopyPara3 = defaultCopyPara3;
+			}
+			break;
+		default:
+			logger("No loadUserCopyPara found...");
 	}
-	else {
-		console.log("not valid loadUserCopyPara number or out of range");
-	}	
+	getCopyPara(paraNumber);	
 }
 
-
 function getCopyPara(paraNumber) {
-	// set/get range ( 1 - 3 )?
-	if (isValidNumber(paraNumber)) {
-		switch (paraNumber) {
-			case 1:
-				if (hasVarString(setCopyPara1)) {
-					document.getElementById("resultPara1").innerHTML = setCopyPara1;
-				}
-				else {
-					document.getElementById("resultPara1").innerHTML = defaultCopyPara1;
-				}
-				break;
-			case 2:
-				if (hasVarString(setCopyPara2)) {
-					document.getElementById("resultPara2").innerHTML = setCopyPara2;
-				}
-				else {
-					document.getElementById("resultPara2").innerHTML = defaultCopyPara2;
-				}
-				break;
-			case 3:
-				if (hasVarString(setCopyPara3)) {
-					document.getElementById("resultPara3").innerHTML = setCopyPara3;
-				}
-				else {
-					document.getElementById("resultPara3").innerHTML = defaultCopyPara3;
-				}
-				break;
-			default:
-				console.log("No getCopyPara found...");
-		}
-	}
-	else {
-		console.log("not valid setCopyPara number or out of range");
-	}	
+	switch (paraNumber) {
+		case 1:
+			if (hasVarString(setCopyPara1)) {
+				document.getElementById("resultPara1").innerHTML = setCopyPara1;
+			}
+			else {
+				document.getElementById("resultPara1").innerHTML = defaultCopyPara1;
+			}
+			break;
+		case 2:
+			if (hasVarString(setCopyPara2)) {
+				document.getElementById("resultPara2").innerHTML = setCopyPara2;
+			}
+			else {
+				document.getElementById("resultPara2").innerHTML = defaultCopyPara2;
+			}
+			break;
+		case 3:
+			if (hasVarString(setCopyPara3)) {
+				document.getElementById("resultPara3").innerHTML = setCopyPara3;
+			}
+			else {
+				document.getElementById("resultPara3").innerHTML = defaultCopyPara3;
+			}
+			break;
+		default:
+			logger("No getCopyPara found...");
+	}			
 }
 
 /**********************************************/
 
 // DEVICE EMULATORS
-
-function loadDevice(deviceType) {
-	// check deviceType..
-	var deviceElementId = "none";
-	var deviceFile = "none";
-	
-	if (deviceType != null) {
-		deviceElementId = deviceType;
-	}
-	
+function loadDeviceFile() {
 	switch (deviceType) {
 		case "contentPU":
 			deviceFile = deviceFilePU;
@@ -311,7 +426,9 @@ function loadDevice(deviceType) {
 		default:
 			break;	
 	}
+}
 
+function loadDeviceContent() {	
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -323,7 +440,7 @@ function loadDevice(deviceType) {
 	}
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			document.getElementById(deviceElementId).innerHTML = xmlhttp.responseText;
+			document.getElementById(deviceType).innerHTML = xmlhttp.responseText;
 		}
 	}
 	xmlhttp.open("GET", deviceFile, true);
@@ -331,19 +448,16 @@ function loadDevice(deviceType) {
 	xmlhttp.send();
 }
 
-function parseForDevice(deviceType) {
-	if (deviceType == null) {
-		//blah
-	}
+function parseForDevice() {
 	//
 	// check for set vars before trying to parse them into the device
 	//
 	// byline
-	console.log( "setByline: " + setByline);
+	logger("setByline: " + setByline);
 	document.getElementById("templateByline").innerHTML = setByline;
 	//
 	// heading - (EOA temp2-title-text)
-	console.log( "setHeading: " + setHeading);
+	logger("setHeading: " + setHeading);
 	document.getElementById("templateHeading").innerHTML = setHeading;
 	
 	// reportCover
@@ -358,5 +472,35 @@ function parseForDevice(deviceType) {
 	document.getElementById("templatePara2").innerHTML = setCopyPara2;
 	document.getElementById("templatePara3").innerHTML = setCopyPara3;
 	//
+}
+
+/**********************************************/
+
+function saveDeviceFile() {
+	// based upon template, save it and any edits to 
+	// /saves/ folder.
+	// save file as prefix devicename + timestamp.txt text file to the saves folder
+	var timestamp = new Date().getTime();
+	var fileName = deviceType.concat(timestamp);
+	logger(fileName);	
+}
+
+// PROCESS DEVICE
+
+function processDeviceToFile() {
+	// get finished device template and content,
+	// save to plaintext file suitable for use
+	// in openX.
+	
+	// get the content from the div id , ie. <div id="contentEOA">
+	// and send it to 
+	var contents = document.getElementById(deviceType).innerHTML.value;
+	
+	//open the plaintext in new window:	
+	var OpenWindow = window.open("MM_plaintext.html", 
+				"_blank", 
+				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=900, height=800");
+	OpenWindow.deviceContents = contents;
+    OpenWindow.init();
 }
 

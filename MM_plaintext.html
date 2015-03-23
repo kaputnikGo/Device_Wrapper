@@ -1,0 +1,38 @@
+<!--
+/******************************* 
+*
+* MM_plaintext.html
+*
+* plain text container for 
+* edited MM device ready to save
+*
+*
+********************************/
+-->
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>MM_Plaintext Container</title>
+	
+	<script type="text/javascript">
+		var deviceContents;    
+		function init() {
+			/*document.write(dataFromParent);*/
+			document.getElementById("deviceContent").innerHTML = deviceContents;
+		}
+	</script>	
+</head>
+
+<body style="margin: 24px;">
+	<h1>Plaintext device</h1>
+	<br />
+
+	<div class="displayContainer">
+		<div id="deviceContent">
+			<!-- device goes in here -->
+		</div>			
+	</div>	
+
+</body>
+</html>
