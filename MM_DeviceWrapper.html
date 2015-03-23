@@ -3,7 +3,7 @@
 *
 * MM_DeviceWrapper.html
 *
-* wrapper for MM devices display
+* wrapper for OpenX devices
 *
 ********************************/
 -->
@@ -17,7 +17,7 @@
 <!-- jquery dev version -->
 <script src="jquery-1.11.2.min.js" charset="utf-8"></script>
 
-<title>MM_Device Wrapper</title>
+<title>OpenX_Device Wrapper</title>
 
 <script language="javascript">
 	loadFontstyle();
@@ -31,8 +31,12 @@
 <body style="margin: 24px;">
 
 <div class="topper">
-	<h1>Local Git says MM wrapper</h1>
+	<h1>Local Git says OpenX wrapper</h1>
 	<div class="btnLeft">
+		<input id="siteVersion" type="radio" name="siteVersion" value="MM">MM
+		-|- <input id="siteVersion" type="radio" name="siteVersion" value="DR">DR
+		-|- <input id="siteVersion" type="radio" name="siteVersion" value="TI">TI
+		______
 		<button type="button" onclick="resetAllLeftFields()">RESET this</button>
 	</div>
 	<div class="btnRight">

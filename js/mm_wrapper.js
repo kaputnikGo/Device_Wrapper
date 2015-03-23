@@ -29,15 +29,23 @@ function myFunction(x, y) {
 var DEBUG = true;
 
 // template file locations
-var deviceFilePU = "templates/MM_2015-template-Optin-PU.html";
-var deviceFileSF = "templates/MM_2015-template-SF.html";
-var deviceFileIF = "templates/MM_2015-template-IF.html";
-var deviceFileEOA = "templates/MM_2015-template-EOA.html";
+var TEMPLATE_LOCATION_MM = "templates/mm/MM_";
+var TEMPLATE_LOCATION_DR = "templates/dr/DR_";
+var TEMPLATE_LOCATION_TI = "templates/ti/TI_";
+
+var deviceFilePU = "2015-template-PU.html";
+var deviceFileSF = "2015-template-SF.html";
+var deviceFileIF = "2015-template-IF.html";
+var deviceFileEOA = "2015-template-EOA.html";
+var defaultDeviceFile = deviceFileEOA;
 
 // stored version of deviceFile for edits and saves
-var deviceFile = "none";
+var siteVersion = "none";
+var deviceFilename = "none";
 var deviceType = "none";
 
+var defaultSiteVersion = "MM_";
+var userSiteVersion = "none";
 var defaultUserDevice = "contentPU";
 var userSelectedDevice = defaultUserDevice;
 
@@ -80,6 +88,19 @@ function logger(message) {
 	}	
 }
 
+function loadSiteVersion() {
+	// depends on radio mm,dr,ti
+	// then deviceType
+	// this must load a siteVersion
+	userSiteVersion = document.querySelector('input[id="siteVersion"]:checked').value;
+	logger(userSiteVersion);	
+	if (hasVarString(userSiteVersion))
+		siteVersion = userSiteVersion;
+	else 
+		siteVersion = defaultSiteVersion;
+	
+}
+
 function loadSelectedDevice() {
 	// this must load a device
 	userSelectedDevice = document.querySelector('input[id="userDeviceType"]:checked').value;
@@ -88,23 +109,6 @@ function loadSelectedDevice() {
 		deviceType = userSelectedDevice;
 	else 
 		deviceType = defaultUserDevice;
-}
-
-function readSingleFile(userFile) {
-	var file = userFile.target.files[0];
-	if (!file) {
-		return;
-	}
-	var reader = new FileReader();
-	reader.onload = function(userFile) {
-		var contents = userFile.target.result;
-	};
-	reader.readAsText(file);
-}
-
-function displayContents(contents) {
-	var element = document.getElementById('file-content');
-	element.innerHTML = contents;
 }
 
 function resetAllLeftFields() {
@@ -220,11 +224,13 @@ function getAllFields() {
 }
 
 function clearDeviceContent() {
-    document.getElementById(devicetype).innerHTML = "";
+    document.getElementById(deviceType).innerHTML = "";
 }
 
 function getDeviceContent() {
+	loadSiteVersion();
 	loadSelectedDevice();
+	loadTemplateLocation();
 	loadDeviceFile();
 	loadDeviceContent();	
 }
@@ -409,41 +415,63 @@ function getCopyPara(paraNumber) {
 /**********************************************/
 
 // DEVICE EMULATORS
-function loadDeviceFile() {
-	switch (deviceType) {
-		case "contentPU":
-			deviceFile = deviceFilePU;
+function loadTemplateLocation() {
+	switch (siteVersion) {
+		case "MM":
+			deviceFilename = TEMPLATE_LOCATION_MM;
 			break;
-		case "contentSF":
-			deviceFile = deviceFileSF;
+		case "DR":
+			deviceFilename = TEMPLATE_LOCATION_DR;
 			break;
-		case "contentIF":
-			deviceFile = deviceFileIF;
-			break;
-		case "contentEOA":
-			deviceFile = deviceFileEOA;
+		case "TI":
+			deviceFilename = TEMPLATE_LOCATION_TI;
 			break;
 		default:
+			deviceFilename = TEMPLATE_LOCATION_MM;			
+			break;
+	}
+	logger("deviceFilename 1: " + deviceFilename);
+}
+
+function loadDeviceFile() {
+	// build device filename here
+	logger("deviceType: " + deviceType);
+	switch (deviceType) {
+		case "contentPU":
+			deviceFilename = deviceFilename.concat(deviceFilePU);
+			break;
+		case "contentSF":
+			deviceFilename = deviceFilename.concat(deviceFileSF);
+			break;
+		case "contentIF":
+			deviceFilename = deviceFilename.concat(deviceFileIF);
+			break;
+		case "contentEOA":
+			deviceFilename = deviceFilename.concat(deviceFileEOA);
+			break;
+		default:
+			deviceFilename = deviceFilename.concat(defaultDeviceFile);
 			break;	
 	}
+	logger("deviceFilename 2: " + deviceFilename);
 }
 
 function loadDeviceContent() {	
 	var xmlhttp;
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
-		xmlhttp=new XMLHttpRequest();
+		xmlhttp = new XMLHttpRequest();
 	} 
 	else {
 		// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			document.getElementById(deviceType).innerHTML = xmlhttp.responseText;
 		}
 	}
-	xmlhttp.open("GET", deviceFile, true);
+	xmlhttp.open("GET", deviceFilename, true);
 	xmlhttp.setRequestHeader('Content-type', 'text/html');
 	xmlhttp.send();
 }
