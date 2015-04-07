@@ -1,10 +1,10 @@
 <!--
 /******************************* 
 *
-* MM_plaintext.html
+* OpenX_plaintext.html
 *
 * plain text container for 
-* edited MM device ready to save
+* edited OpenX device for save
 *
 *
 ********************************/
@@ -13,13 +13,12 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>MM_Plaintext Container</title>
+	<title>OpenX-Device_Plaintext Container</title>
 	
 	<script type="text/javascript">
-		var deviceContents;    
-		function init() {
-			/*document.write(dataFromParent);*/
-			document.getElementById("deviceContent").innerHTML = deviceContents;
+		window.onload = function(){
+			var deviceContents;
+			getElementById("deviceContent").innerHTML = deviceContents;
 		}
 	</script>	
 </head>
@@ -31,6 +30,7 @@
 	<div class="displayContainer">
 		<div id="deviceContent">
 			<!-- device goes in here -->
+			device goes here...
 		</div>			
 	</div>	
 

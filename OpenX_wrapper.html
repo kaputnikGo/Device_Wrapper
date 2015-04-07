@@ -1,9 +1,11 @@
 <!--
 /******************************* 
 *
-* MM_DeviceWrapper.html
+* OpenX_wrapper.html
 *
-* wrapper for OpenX devices
+* setter form for OpenX devices
+* parent for OpenX_result.html
+* and OpenX_display.html
 *
 ********************************/
 -->
@@ -12,11 +14,11 @@
 <head>
 <meta charset="UTF-8">
 <!-- ajax calls -->
-<script type="text/javascript" src="js/mm_wrapper.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/openx_wrapper.js" charset="utf-8"></script>
 <!-- jquery dev version -->
 <script src="jquery-1.11.2.min.js" charset="utf-8"></script>
 
-<title>OpenX_Device Wrapper</title>
+<title>OpenX_Wrapper::setter</title>
 
 <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,300,400,600&subset=latin,latin-ext&ver=4.1.1" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900" rel="stylesheet" type="text/css">
@@ -26,7 +28,7 @@
 </script>
 
 <!-- local overrides last, to ensure devices get displayed correctly --> 
-<link rel="stylesheet" href="mm_overrides.css" type="text/css" media="all" />
+<link rel="stylesheet" href="OpenX_wrapper_overrides.css" type="text/css" media="all" />
 
 </head>
 
@@ -40,21 +42,29 @@
 </script>
 
 <div class="topper">
-	<h1>Local Git says OpenX wrapper _____
-			<input id="MM" type="radio" name="siteVersionRadio" value="MM"> MM
+	<h1 id="wrapper">OpenX_Wrapper::setter</h1>
+	<div class="btnLeft">
+		<input id="MM" type="radio" name="siteVersionRadio" value="MM"> MM
 		-|- <input id="DR" type="radio" name="siteVersionRadio" value="DR"> DR
 		-|- <input id="TI" type="radio" name="siteVersionRadio" value="TI"> TI 
-		<button type="button" onclick="reloadPage()"> LOAD site</button>
-	</h1>
-	<div class="btnLeft">
-		<button type="button" onclick="resetAllLeftFields()">RESET this</button>
+		<button type="button" onclick="reloadPage()">LOAD site</button>
+		<button type="button" onclick="resetAllLeftFields()">RESET form</button>
+		<button type="button" onclick="displayDeviceContent()">process</button>
 	</div>
 	<div class="btnRight">
-		<button type="button" onclick="resetAllRightFields()">RESET this</button>
-		<button type="button" onclick="getAllFields()">load ALL</button>
+		<img id="siteIconImage" src="" alt="site icon" width="57" height="57"/>
+	</div>
+	<div class="deviceControl">
+		<input id="userDeviceType" type="radio" name="deviceType" value="contentPU">PU
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
+		<button type="button" onclick="clearDeviceContent()">clear</button> 
+		<button type="button" onclick="getDeviceContent()">load</button>
+		<button type="button" onclick="updateDeviceContent()">update</button>
 	</div>
 </div>
-	
+
 <div class="pageContainer">
 	<div class="mainContainer">
 		<div class="settingsContainer">
@@ -102,7 +112,7 @@ copy...
 			</textarea>
 			<br />
 		</div><!-- end settingsContainer -->
-
+		
 		<div class="resultContainer">
 			<button onclick="getReportCover()">load</button>
 			<img id="reportCover" src=""  width="" height="" alt="report cover"/>
@@ -124,40 +134,26 @@ copy...
 			<button onclick="getParaCopy(3)">load</button>
 			<div id="resultPara3"> </div>		
 		</div>
-		
+
 		<div class="loadContainer">
-			<div>
-				<h2>display device:</h2>
-			</div>
-			<input id="userDeviceType" type="radio" name="deviceType" value="contentPU">PU
-			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
-			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
-			-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
-			<br /><br />
-			functions for chosen device:<br/>
-			<button type="button" onclick="clearDeviceContent()">clear</button> 
-			<button type="button" onclick="getDeviceContent()">load</button>
-			<button type="button" onclick="updateDeviceContent()">update</button>
-			<button type="button" onclick="processDeviceContent()">process</button>	
-			<br />
 			<br />
 			<div id="contentPU">
-				
+					
 			</div>
 			<div id="contentSF">
-				
+					
 			</div>
 			<div id="contentIF">
-				
+					
 			</div>
 			<div id="contentEOA">
-				
+					
 			</div>
 			<br />
-		</div> <!-- end loadContainer -->
+		</div> <!-- end loadContainer -->	
 		
-	</div> <!-- end mainContainer -->	
-	
+	</div><!-- end mainContainer -->
+
 	<div style="clear:both"></div>
 	
 </div><!-- end pageContainer -->
@@ -167,6 +163,7 @@ copy...
 	siteVersion = localStorage.getItem("siteVersion");
 	// select it's radio button
 	document.getElementById(siteVersion).checked = true;
+	document.getElementById("siteIconImage").src = siteIcon;
 	logger("html says siteVersion: " + siteVersion);
 </script>
 

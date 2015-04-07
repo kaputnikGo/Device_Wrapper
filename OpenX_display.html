@@ -1,0 +1,93 @@
+<!--
+/******************************* 
+*
+* OpenX_display.html
+*
+* render results from 
+* OpenX_wrapper.html
+* using site specific css
+*
+********************************/
+-->
+
+<html>
+<head>
+<meta charset="UTF-8">
+<!-- ajax calls -->
+<script type="text/javascript" src="js/openx_wrapper.js" charset="utf-8"></script>
+<!-- jquery dev version -->
+<script src="jquery-1.11.2.min.js" charset="utf-8"></script>
+
+<title>OpenX_Wrapper::display</title>
+
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,300,400,600&subset=latin,latin-ext&ver=4.1.1" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,900" rel="stylesheet" type="text/css">
+
+<script type="text/javascript">
+	loadSiteStyles();
+</script>
+
+<!-- local overrides last, to ensure devices get displayed correctly --> 
+<link rel="stylesheet" href="OpenX_wrapper_overrides.css" type="text/css" media="all" />
+
+</head>
+
+<body style="margin: 24px;">
+<script type="text/javascript">
+	function reloadPage() {
+		// store the selected site
+		storeLocal();
+		location.reload(true);
+	}
+</script>
+
+<div class="topper">
+	<h1 id="wrapper">OpenX_Wrapper::display</h1>
+	<div class="btnLeft">
+		<input id="userDeviceType" type="radio" name="deviceType" value="contentPU">PU
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
+		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
+		<button type="button" onclick="clearDeviceContent()">clear</button> 
+		<button type="button" onclick="getDeviceContent()">load</button>
+		<button type="button" onclick="updateDeviceContent()">update</button>
+	</div>
+	<div class="btnRight">
+		<img id="siteIconImage" src="" alt="site icon" width="57" height="57"/>
+	</div>
+</div>
+<div class="pageContainer">
+	<div class="mainContainer">
+		<div class="loadContainer">
+			<br />
+			<div id="contentPU">
+					
+			</div>
+			<div id="contentSF">
+					
+			</div>
+			<div id="contentIF">
+					
+			</div>
+			<div id="contentEOA">
+					
+			</div>
+			<br />
+		</div> <!-- end loadContainer -->		
+	</div> <!-- end mainContainer -->	
+	
+	<div style="clear:both"></div>
+	
+</div><!-- end pageContainer -->
+
+<script type="text/javascript">
+	// get stored siteVersion
+	siteVersion = localStorage.getItem("siteVersion");
+	// select it's radio button
+	document.getElementById(siteVersion).checked = true;
+	document.getElementById("siteIconImage").src = siteIcon;
+	logger("html says siteVersion: " + siteVersion);
+</script>
+
+</body>
+</html>

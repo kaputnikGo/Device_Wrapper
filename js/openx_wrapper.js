@@ -1,6 +1,6 @@
 /******************************* 
 *
-* mm_wrapper.js
+* openx_wrapper.js
 *
 * functions for MM devices 
 *	display
@@ -12,7 +12,7 @@
 
 /******************************************************************
 
-// default (global) vars for MM_DeviceWrapper
+// default (global) vars for OpenX_Wrapper
 // preset parseable to default in cases where a value is necessary
 // should declare these with init values to determine type (int, string, etc.)
 
@@ -39,10 +39,31 @@ var deviceFileIF = "2015-template-IF.html";
 var deviceFileEOA = "2015-template-EOA.html";
 var defaultDeviceFile = deviceFileEOA;
 
+var DEVICETYPE_EOA = "contentEOA";
+var DEVICETYPE_PU = "contentPU";
+var DEVICETYPE_SF = "contentSF";
+var DEVICETYPE_IF = "contentIF";
+
+// site specific stylesheets
+var MMstyle1url = "http://www.moneymorning.com.au/wp-content/themes/shoestrap-leadgen/style.css";
+var MMstyle2url = "http://www.moneymorning.com.au/wp-content/uploads/ss-style.css?ver=1424233318";
+var MMicon = "MM-icon.jpg";
+
+var DRstyle1url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/style.css";
+var DRstyle2url = "http://dailyreckoning.com.au/css/signupbox.css";
+var DRstyle3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
+var DRicon = "DR-icon.jpg";
+
+var TIstyle1url = "http://www.techinsider.com.au/wp-content/themes/expound-child/style.css?ver=20131116";
+var TIstyle2url = "http://www.techinsider.com.au/wp-content/themes/expound/css/expound.css";
+var TIstyle3url = "http://www.techinsider.com.au/wp-content/themes/expound/css/reset.css";
+var TIicon = "TI-icon.jpg";
+
 // stored version of deviceFile for edits and saves
 var siteVersion = "none";
 var deviceFilename = "none";
 var deviceType = "none";
+var siteIcon = "none";
 
 var defaultSiteVersion = "MM_";
 var userSiteVersion = "none";
@@ -74,6 +95,9 @@ var setCopyPara2 = defaultCopyPara2;
 var defaultCopyPara3 = "";
 var setCopyPara3 = defaultCopyPara3;
 
+//
+var plaintextWindow;
+
 /************************************************************************************/
 //
 //
@@ -90,15 +114,15 @@ function logger(message) {
 
 function loadSiteVersion() {
 	// depends on radio mm,dr,ti
-	// then deviceType
+	// in case user changed site but not pressed LOAD site..
 	// this must load a siteVersion
-	userSiteVersion = document.querySelector('input[id="siteVersion"]:checked').value;
+	userSiteVersion = document.querySelector('input[name="siteVersionRadio"]:checked').value;
+
 	logger(userSiteVersion);	
 	if (hasVarString(userSiteVersion))
 		siteVersion = userSiteVersion;
 	else 
 		siteVersion = defaultSiteVersion;
-	
 }
 
 function loadSelectedDevice() {
@@ -109,6 +133,45 @@ function loadSelectedDevice() {
 		deviceType = userSelectedDevice;
 	else 
 		deviceType = defaultUserDevice;
+}
+
+function loadSiteStyles() {
+	// depends on siteVersion...
+	// storage may be undefined...
+	siteVersion = localStorage.getItem("siteVersion");
+	var style1url, style2url;
+	switch (siteVersion) {
+		case "MM":
+			style1url = MMstyle1url;
+			style2url = MMstyle2url;
+			siteIcon = MMicon;
+			break;
+		case "DR":
+			style1url = DRstyle1url;
+			style2url = DRstyle2url;
+			siteIcon = DRicon;
+			document.write('<link rel="stylesheet" href="' + DRstyle3url + '" type="text/css" media="all" />');
+			break;
+		case "TI":
+			style1url = TIstyle1url;
+			style2url = TIstyle2url;
+			siteIcon = TIicon;
+			document.write('<link rel="stylesheet" href="' + TIstyle3url + '" type="text/css" media="all" />');
+			break;
+		default:
+			style1url = MMstyle1url;
+			style2url = MMstyle2url;
+			siteIcon = MMicon;
+			break;
+	} 	
+	document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
+	document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
+}
+
+function storeLocal() {
+	loadSiteVersion();
+	localStorage.setItem("siteVersion", siteVersion);
+	logger("storing: " + siteVersion);
 }
 
 function resetAllLeftFields() {
@@ -163,6 +226,14 @@ function elementIsDefined(checkable) {
 //
 //
 /************************************************************************************/
+
+function getSiteVersion() {
+	// depends on radio mm,dr,ti
+	// loads the site specific css
+	// as well as setting the siteVersion
+	loadSiteVersion();
+	loadSiteStyles();
+}
 
 function getReportCover() {
 	// load form elements first
@@ -224,7 +295,11 @@ function getAllFields() {
 }
 
 function clearDeviceContent() {
-    document.getElementById(deviceType).innerHTML = "";
+	// clear any that are on screen...	
+    document.getElementById(DEVICETYPE_PU).innerHTML = "";
+	document.getElementById(DEVICETYPE_EOA).innerHTML = "";
+	document.getElementById(DEVICETYPE_SF).innerHTML = "";
+	document.getElementById(DEVICETYPE_IF).innerHTML = "";
 }
 
 function getDeviceContent() {
@@ -241,13 +316,13 @@ function updateDeviceContent() {
 	/*
 	// needed?
 	switch (deviceType) {
-		case "contentPU":
+		case DEVICETYPE_PU:
 			break;
-		case "contentSF":
+		case DEVICETYPE_SF:
 			break;
-		case "contentIF":
+		case DEVICETYPE_IF:
 			break;
-		case "contentEOA":
+		case DEVICETYPE_EOA:
 			break;
 		default:
 			break;
@@ -256,7 +331,7 @@ function updateDeviceContent() {
 	parseForDevice();
 }
 
-function processDeviceContent() {
+function displayDeviceContent() {
 	// check have all the content and deviceType
 	
 	// singular point of naming saveFile
@@ -437,16 +512,16 @@ function loadDeviceFile() {
 	// build device filename here
 	logger("deviceType: " + deviceType);
 	switch (deviceType) {
-		case "contentPU":
+		case DEVICETYPE_PU:
 			deviceFilename = deviceFilename.concat(deviceFilePU);
 			break;
-		case "contentSF":
+		case DEVICETYPE_SF:
 			deviceFilename = deviceFilename.concat(deviceFileSF);
 			break;
-		case "contentIF":
+		case DEVICETYPE_IF:
 			deviceFilename = deviceFilename.concat(deviceFileIF);
 			break;
-		case "contentEOA":
+		case DEVICETYPE_EOA:
 			deviceFilename = deviceFilename.concat(deviceFileEOA);
 			break;
 		default:
@@ -521,14 +596,34 @@ function processDeviceToFile() {
 	// in openX.
 	
 	// get the content from the div id , ie. <div id="contentEOA">
-	// and send it to 
-	var contents = document.getElementById(deviceType).innerHTML.value;
+	// and send it to
+	logger("deviceType: " + deviceType);
+	var contents;
+	switch (deviceType) {
+		case DEVICETYPE_PU:
+			contents = document.getElementById("contentPU").innerHTML.value;
+			break;
+		case DEVICETYPE_SF:
+			contents = document.getElementById("contentSF").innerHTML.value;
+			break;
+		case DEVICETYPE_IF:
+			contents = document.getElementById("contentIF").innerHTML.value;
+			break;
+		case DEVICETYPE_EOA:
+			contents = document.getElementById("contentEOA").innerHTML.value;
+			break;
+		default:
+			contents = "no device content found";
+			break;
+	}
 	
+	logger("contents: " + contents);
 	//open the plaintext in new window:	
-	var OpenWindow = window.open("MM_plaintext.html", 
+	plaintextWindow = window.open("OpenX_plaintext.html", 
 				"_blank", 
 				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=900, height=800");
-	OpenWindow.deviceContents = contents;
-    OpenWindow.init();
+	plaintextWindow.deviceContents = contents;
+	//plaintextWindow.document.getElementById("deviceContent").innerHTML = contents;
+	//OpenWindow.init();
 }
 

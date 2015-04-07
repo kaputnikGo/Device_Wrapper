@@ -4,32 +4,39 @@ MM override styles for wrapper
 
 
 */
+* {
+	box-sizing: border-box;
+}
+
 html {
 	overflow: auto;
 }
 
 body {
-	font-family: 'Open Sans', sans-serif;
-	line-height:20px; 
-	font-weight:400; 
-	font-style:normal; 
-	color:#000000;
-	font-size:14px;
-}
 	
-h3, .h3 {
+}
+
+h1 {
 	font-family: 'Droid Serif', serif;
-	line-height:125%;
-	font-weight:700;
-	font-style:italic;
-	color:#001a39;
-	font-size:125%;
+	font-size: 24px;
+
+}
+
+h1#wrapper {
+	margin: 0;
+	line-height: 1;
 }
 
 .topper {
 	display: inline-block;
 	width: 100%;
+	min-width: 1000px;
+	max-width: 1460px;
 	height: 100px;
+	background-color: #fff;
+	border: black 2px solid;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 .btnLeft {
@@ -39,7 +46,18 @@ h3, .h3 {
 
 .btnRight {
 	float: left;
-	margin-left: 140px;
+	margin-left: 20px;
+}
+
+.deviceControl {
+	display: inline-block;
+	float: right;
+	margin-right: 20px;
+}
+
+img#siteIconImage {
+	padding: 0;
+	margin: 0;
 }
 
 .btnFar {
@@ -49,8 +67,10 @@ h3, .h3 {
 
 .pageContainer {
 	display: block;
-	width: 1880px;
-	height: 1200px;
+	width: 100%;
+	height: 100%;
+	min-width: 1000px;
+	min-height: 1200px;
 	padding: 12px;
 	background-color: #333;
 }
@@ -61,40 +81,46 @@ h3, .h3 {
 }
 
 .settingsContainer {
-	display: inline-block;
+	display: block;
 	position: relative;
+	margin-bottom: 12px;
+	margin-right: 12px;
 	float: left;
-	width: 340px;
-	height: 1180px;
+	width: 360px;
+	height: 1200px;
 	background-color: #999;
 	padding-left: 12px;
+	border: white 2px solid;
 }
 
 .resultContainer {
-	display: inline-block;
+	display: block;
 	position: relative;
 	float: left;
-	width: 540px;
-	height: 1180px;
-	margin-left: 12px;
+	width: 480px;
+	height: 1200px;
 	padding-right: 12px;
 	padding-left: 12px;
+	margin-bottom: 12px;
+	margin-right: 12px;
 	background-color: #999;
+	border: white 2px solid;
 }
 
 .loadContainer {
-	display: inline-block;
+	display: block;
+	position: relative;
 	float: left;
 	background-color: #ececec;
-	width: 50%;
+	min-width: 600px;
 	height: 100%;
-	margin-left: 12px;
 	padding-left: 12px;
+	border: white 2px solid;
 }
 
 .displayContainer {
 	display: block;
-	background-color: #666;
+	background-color: #fff;
 }
 
 hr .spaceLine {
@@ -105,19 +131,19 @@ hr .spaceLine {
 
 .sizer  {
 	display: block;
-	width: 60px;
+	width: 600px;
 	height: 100px;
 }
 
 .copyHeading {
 	display: block;
-	width: 300px;
+	width: 600px;
 	height: 40px;
 }
 
 .copyText {
 	display: block;
-	width: 300px;
+	width: 600px;
 	height: 200px;
 	font-style: normal;
 	text-align: left;
@@ -166,7 +192,61 @@ hr .spaceLine {
 	color: #000;
 }
 
-/* optin monster PU styling */
+button {
+	color: #ffffff;
+}
+
+input, textarea {
+	background: #ffffff;
+	max-width: 300px;
+}
+
+/* overriddes for site-specific devices */
+
+/* DR styling */
+#om-cgkvt1vwff-canvas {
+	width: 700px;
+	height: 680px;
+}
+
+.textwidget a {
+	color: #9F1A1A;
+}
+
+.textwidget #signup-form .signup-text-box-input-sf {
+	height: 42px;
+	width: 228px;
+}
+
+.post {
+	font-size: 12px;
+	line-height: 1.8;
+}
+
+.post a{
+	color: #9F1A1A;
+}
+
+/* TI styling */
+
+#secondary {
+	width: 280px;
+}
+
+#side-email {
+	width: 220px;
+}
+
+
+/* MM styling */
+h3 {
+	font-family: 'Droid Serif', serif;
+	line-height:125%;
+	font-weight:700;
+	font-style:italic;
+	color:#001a39;
+	font-size:125%;
+}
 
 	#optin-canvas #om-canvas-whiteboard-theme-optin {
 		display:inherit;
