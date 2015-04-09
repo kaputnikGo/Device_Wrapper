@@ -332,6 +332,9 @@ function updateDeviceContent() {
 }
 
 function displayDeviceContent() {
+	// displays the finished device in a new window,
+	// ready for cut n paste into openX
+	
 	// check have all the content and deviceType
 	
 	// singular point of naming saveFile
@@ -594,36 +597,21 @@ function processDeviceToFile() {
 	// get finished device template and content,
 	// save to plaintext file suitable for use
 	// in openX.
-	
-	// get the content from the div id , ie. <div id="contentEOA">
-	// and send it to
-	logger("deviceType: " + deviceType);
 	var contents;
-	switch (deviceType) {
-		case DEVICETYPE_PU:
-			contents = document.getElementById("contentPU").innerHTML.value;
-			break;
-		case DEVICETYPE_SF:
-			contents = document.getElementById("contentSF").innerHTML.value;
-			break;
-		case DEVICETYPE_IF:
-			contents = document.getElementById("contentIF").innerHTML.value;
-			break;
-		case DEVICETYPE_EOA:
-			contents = document.getElementById("contentEOA").innerHTML.value;
-			break;
-		default:
-			contents = "no device content found";
-			break;
-	}
+	contents = document.getElementById(deviceType).innerHTML;
 	
 	logger("contents: " + contents);
 	//open the plaintext in new window:	
 	plaintextWindow = window.open("OpenX_plaintext.html", 
 				"_blank", 
 				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=900, height=800");
-	plaintextWindow.deviceContents = contents;
-	//plaintextWindow.document.getElementById("deviceContent").innerHTML = contents;
-	//OpenWindow.init();
+	plaintextWindow.document.open();
+	// get it to not render as html but as visible code
+	var safe = "<pre>";
+	safe += contents.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+	safe += "</pre>";
+	plaintextWindow.document.write(safe);
+	
+	plaintextWindow.document.close();
 }
 
