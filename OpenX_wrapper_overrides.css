@@ -28,15 +28,12 @@ h1#wrapper {
 }
 
 .topper {
-	display: inline-block;
+	display: block;
 	width: 100%;
-	min-width: 1000px;
-	max-width: 1460px;
-	height: 100px;
+  min-width: 800px;
+	min-height: 140px;
 	background-color: #fff;
 	border: black 2px solid;
-	margin-left: 12px;
-	margin-right: 12px;
 }
 
 .btnLeft {
@@ -51,8 +48,9 @@ h1#wrapper {
 
 .deviceControl {
 	display: inline-block;
-	float: right;
-	margin-right: 20px;
+  width: 800px;
+	float: left;
+	margin-left: 20px;
 }
 
 img#siteIconImage {
@@ -68,8 +66,8 @@ img#siteIconImage {
 .pageContainer {
 	display: block;
 	width: 100%;
+  min-width: 800px;
 	height: 100%;
-	min-width: 1000px;
 	min-height: 1200px;
 	padding: 12px;
 	background-color: #333;
@@ -87,7 +85,7 @@ img#siteIconImage {
 	margin-right: 12px;
 	float: left;
 	width: 360px;
-	height: 1200px;
+	height: 100%;
 	background-color: #999;
 	padding-left: 12px;
 	border: white 2px solid;
@@ -112,7 +110,7 @@ img#siteIconImage {
 	position: relative;
 	float: left;
 	background-color: #ececec;
-	min-width: 600px;
+	min-width: 640px;
 	height: 100%;
 	padding-left: 12px;
 	border: white 2px solid;
@@ -131,8 +129,7 @@ hr .spaceLine {
 
 .sizer  {
 	display: block;
-	width: 600px;
-	height: 100px;
+	width: 300px;
 }
 
 .copyHeading {
@@ -226,17 +223,6 @@ input, textarea {
 .post a{
 	color: #9F1A1A;
 }
-
-/* TI styling */
-
-#secondary {
-	width: 280px;
-}
-
-#side-email {
-	width: 220px;
-}
-
 
 /* MM styling */
 h3 {

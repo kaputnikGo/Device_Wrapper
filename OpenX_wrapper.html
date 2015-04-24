@@ -42,78 +42,84 @@
 </script>
 
 <div class="topper">
-	<h1 id="wrapper">OpenX_Wrapper::setter</h1>
 	<div class="btnLeft">
-		<input id="MM" type="radio" name="siteVersionRadio" value="MM"> MM
+		<p style="font-size: 34px">1: <span style="font-size: 14; font-style: oblique;">(load website style)</span></p>
+    <input id="MM" type="radio" name="siteVersionRadio" value="MM"> MM
 		-|- <input id="DR" type="radio" name="siteVersionRadio" value="DR"> DR
-		-|- <input id="TI" type="radio" name="siteVersionRadio" value="TI"> TI 
-		<button type="button" onclick="reloadPage()">LOAD site</button>
+		<br />
+    <button type="button" onclick="reloadPage()">LOAD site</button>
 		<button type="button" onclick="resetAllLeftFields()">RESET form</button>
-		<button type="button" onclick="displayDeviceContent()">process</button>
 	</div>
 	<div class="btnRight">
-		<img id="siteIconImage" src="" alt="site icon" width="57" height="57"/>
+    <p style="font-size: 34px">2: <span style="font-size: 14; font-style: oblique;">(icon confirms site load)</span></p>
+		<img style="margin-left: 36px;" id="siteIconImage" src="" alt="site icon" width="57" height="57"/>
 	</div>
 	<div class="deviceControl">
-		<input id="userDeviceType" type="radio" name="deviceType" value="contentPU">PU
-		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
-		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
-		-|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
-		<button type="button" onclick="clearDeviceContent()">clear</button> 
-		<button type="button" onclick="getDeviceContent()">load</button>
-		<button type="button" onclick="updateDeviceContent()">update</button>
-	</div>
+    <div class="btnLeft">
+     <p style="font-size: 34px">3: <span style="font-size: 14; font-style: oblique;">(choose device type, load, update)</span></p>
+      <input id="userDeviceType" type="radio" name="deviceType" value="contentPU">PU
+      -|- <input id="userDeviceType" type="radio" name="deviceType" value="contentSF">_SF
+      -|- <input id="userDeviceType" type="radio" name="deviceType" value="contentIF">_IF
+      -|- <input id="userDeviceType" type="radio" name="deviceType" value="contentEOA">EOA
+      <br />
+      <button type="button" onclick="clearDeviceContent()">clear</button> 
+      <button type="button" onclick="getDeviceContent()">load</button>
+      <button type="button" onclick="updateDeviceContent()">update</button>
+    </div>
+    <div class="btnRight">  
+      <p style="font-size: 34px">4: <span style="font-size: 14; font-style: oblique;">(process to new window)</span></p>
+      <button type="button" onclick="displayDeviceContent()">process</button>
+    </div>
+    <div class="btnRight">
+<br />    
+<pre>common html entities:
+&lt;br /&gt;  &nbsp; &lt;strong&gt;<strong>bold</strong>&lt;/strong&gt; 
+&lt;em&gt;<em>italics</em>&lt;/em&gt;  ... &amp;hellip;
+&lsquo; &amp;lsquo;  &rsquo; &amp;rsquo;
+&ndash; &amp;ndash  &mdash; &ampmdash;</pre>
+    </div>
+  </div>
+<div style="clear:both"></div>  
 </div>
+
+<div style="clear:both"></div>
 
 <div class="pageContainer">
 	<div class="mainContainer">
 		<div class="settingsContainer">
-			Set report cover link (url):
+set report cover(url, optional size):
 			<div class="copyHeading">
 				<input id="userReportCover" type="text" name="userReportCover" size="40" maxlength="100" placeholder="http://">
 			</div>
-			<br />
-			Set report cover display size:
-			<br />
 			<div class="sizer">
 				<input id="userCoverWide" type="text" name="coverWide" size="5" maxlength="3" placeholder="w (px)">
-				<br /><br />
+				<br />
 				<input id="userCoverHigh" type="text" name="coverHigh" size="5" maxlength="3" placeholder="h (px)">
 			</div>
 			<hr class="spaceLine">
-			Set small byline:
-			<br />
 			<div class="copyHeading">
-				<input id="userByline" type="text" name="byline" size="60" maxlength="60" placeholder="byline..."> 
-			</div>
-			<br />
-			Set heading:
-			<br />
+				<input id="userHeading" type="text" name="heading" size="80" maxlength="120" placeholder="set heading..."> 
+			</div>			
 			<div class="copyHeading">
-				<input id="userHeading" type="text" name="heading" size="80" maxlength="80" placeholder="heading..."> 
+				<input id="userByline" type="text" name="byline" size="60" maxlength="120" placeholder=" set byline..."> 
 			</div>
 			<hr class="spaceLine">
-			Set copy para1:
-			<br />
 			<textarea class="copyText" id="userCopyPara1" name="para1" >
-copy...
+set copy para1...
 			</textarea>
-			<br />
-			Set copy para2 :
-			<br />
+			<hr class="spaceLine">
 			<textarea class="copyText" id="userCopyPara2" name="para2" >
-copy...
+set copy para2...
 			</textarea>
-			<br />
-			Set copy para3:
-			<br />
+			<hr class="spaceLine">
 			<textarea class="copyText" id="userCopyPara3" name="para3" >
-copy...
+set copy para3...
 			</textarea>
 			<br />
 		</div><!-- end settingsContainer -->
 		
-		<div class="resultContainer">
+		<!-- container not shown, but used to process form above -->
+		<div class="resultContainer" style="display: none;">
 			<button onclick="getReportCover()">load</button>
 			<img id="reportCover" src=""  width="" height="" alt="report cover"/>
 			<hr class="spaceLine">
@@ -151,7 +157,6 @@ copy...
 			</div>
 			<br />
 		</div> <!-- end loadContainer -->	
-		
 	</div><!-- end mainContainer -->
 
 	<div style="clear:both"></div>

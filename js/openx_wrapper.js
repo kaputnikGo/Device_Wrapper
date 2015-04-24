@@ -31,7 +31,6 @@ var DEBUG = true;
 // template file locations
 var TEMPLATE_LOCATION_MM = "templates/mm/MM_";
 var TEMPLATE_LOCATION_DR = "templates/dr/DR_";
-var TEMPLATE_LOCATION_TI = "templates/ti/TI_";
 
 var deviceFilePU = "2015-template-PU.html";
 var deviceFileSF = "2015-template-SF.html";
@@ -53,11 +52,6 @@ var DRstyle1url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/styl
 var DRstyle2url = "http://dailyreckoning.com.au/css/signupbox.css";
 var DRstyle3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
 var DRicon = "DR-icon.jpg";
-
-var TIstyle1url = "http://www.techinsider.com.au/wp-content/themes/expound-child/style.css?ver=20131116";
-var TIstyle2url = "http://www.techinsider.com.au/wp-content/themes/expound/css/expound.css";
-var TIstyle3url = "http://www.techinsider.com.au/wp-content/themes/expound/css/reset.css";
-var TIicon = "TI-icon.jpg";
 
 // stored version of deviceFile for edits and saves
 var siteVersion = "none";
@@ -152,12 +146,6 @@ function loadSiteStyles() {
 			siteIcon = DRicon;
 			document.write('<link rel="stylesheet" href="' + DRstyle3url + '" type="text/css" media="all" />');
 			break;
-		case "TI":
-			style1url = TIstyle1url;
-			style2url = TIstyle2url;
-			siteIcon = TIicon;
-			document.write('<link rel="stylesheet" href="' + TIstyle3url + '" type="text/css" media="all" />');
-			break;
 		default:
 			style1url = MMstyle1url;
 			style2url = MMstyle2url;
@@ -218,6 +206,7 @@ function elementIsDefined(checkable) {
 	// checkable null can equal defined...
 	return (typeof checkable != 'undefined');
 }
+	
 
 /************************************************************************************/
 //
@@ -311,14 +300,15 @@ function getDeviceContent() {
 }
 
 function updateDeviceContent() {
-	// in case (?):
-	//loadSelectedDevice();
-	/*
-	// needed?
+	getAllFields();
+	// 	this gets the form content from settingsContainer
+	//	and inputs it into the loadContainer
 	switch (deviceType) {
 		case DEVICETYPE_PU:
 			break;
 		case DEVICETYPE_SF:
+			// conditions: no byline, 4th element
+			parseForDevice(4);
 			break;
 		case DEVICETYPE_IF:
 			break;
@@ -327,21 +317,15 @@ function updateDeviceContent() {
 		default:
 			break;
 	}
-	*/	
-	parseForDevice();
 }
 
 function displayDeviceContent() {
 	// displays the finished device in a new window,
-	// ready for cut n paste into openX
-	
-	// check have all the content and deviceType
-	
+	// ready for cut n paste into openX	
+	// check have all the content and deviceType	
 	// singular point of naming saveFile
 	var timestamp = new Date().getTime();
 	logger(deviceType.concat(timestamp));
-	
-	// will call this at end
 	processDeviceToFile();
 }
 
@@ -410,7 +394,7 @@ function loadUserByline() {
 // HEADING
 function loadUserHeading() {
 	var candidate = document.getElementById("userHeading").value;
-	
+	logger("loadUserHeading, candidate: " + candidate);
 	if (hasVarString(candidate)) {
 		setHeading = candidate;
 	}
@@ -501,9 +485,6 @@ function loadTemplateLocation() {
 		case "DR":
 			deviceFilename = TEMPLATE_LOCATION_DR;
 			break;
-		case "TI":
-			deviceFilename = TEMPLATE_LOCATION_TI;
-			break;
 		default:
 			deviceFilename = TEMPLATE_LOCATION_MM;			
 			break;
@@ -554,16 +535,18 @@ function loadDeviceContent() {
 	xmlhttp.send();
 }
 
-function parseForDevice() {
+function parseForDevice(except) {
 	//
 	// check for set vars before trying to parse them into the device
 	//
 	// byline
-	logger("setByline: " + setByline);
-	document.getElementById("templateByline").innerHTML = setByline;
+	if (except!=4) {
+		logger("setByline: " + setByline);
+		document.getElementById("templateByline").innerHTML = setByline;
+	}
 	//
 	// heading - (EOA temp2-title-text)
-	logger("setHeading: " + setHeading);
+	logger("setHeading: " + setHeading); // this retains the entities: &rsquo;
 	document.getElementById("templateHeading").innerHTML = setHeading;
 	
 	// reportCover
@@ -582,35 +565,32 @@ function parseForDevice() {
 
 /**********************************************/
 
-function saveDeviceFile() {
-	// based upon template, save it and any edits to 
-	// /saves/ folder.
-	// save file as prefix devicename + timestamp.txt text file to the saves folder
-	var timestamp = new Date().getTime();
-	var fileName = deviceType.concat(timestamp);
-	logger(fileName);	
-}
-
 // PROCESS DEVICE
 
 function processDeviceToFile() {
 	// get finished device template and content,
 	// save to plaintext file suitable for use
 	// in openX.
+	
 	var contents;
 	contents = document.getElementById(deviceType).innerHTML;
 	
-	logger("contents: " + contents);
+	//logger("contents: " + contents);
 	//open the plaintext in new window:	
 	plaintextWindow = window.open("OpenX_plaintext.html", 
 				"_blank", 
 				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=900, height=800");
 	plaintextWindow.document.open();
+
 	// get it to not render as html but as visible code
+	// this is where the html entities need to be kept as such
+
 	var safe = "<pre>";
 	safe += contents.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 	safe += "</pre>";
 	plaintextWindow.document.write(safe);
+
+	//plaintextWindow.document.write(document.getElementById(deviceType).innerHTML);
 	
 	plaintextWindow.document.close();
 }
