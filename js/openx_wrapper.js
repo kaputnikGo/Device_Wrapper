@@ -303,20 +303,7 @@ function updateDeviceContent() {
 	getAllFields();
 	// 	this gets the form content from settingsContainer
 	//	and inputs it into the loadContainer
-	switch (deviceType) {
-		case DEVICETYPE_PU:
-			break;
-		case DEVICETYPE_SF:
-			// conditions: no byline, 4th element
-			parseForDevice(4);
-			break;
-		case DEVICETYPE_IF:
-			break;
-		case DEVICETYPE_EOA:
-			break;
-		default:
-			break;
-	}
+	parseForDevice();
 }
 
 function displayDeviceContent() {
@@ -349,6 +336,8 @@ function loadUserReportCover() {
 		// check for valid url here
 		setReportCoverUrl = candidate;
 	}
+	//gc 
+  candidate = null;
 }
 
 function loadUserCoverWide() {
@@ -359,6 +348,7 @@ function loadUserCoverWide() {
 	else if (isValidNumber(candidate)) {
 		setCoverWide = candidate;
 	}
+	//gc
 	candidate = null;
 }
 
@@ -385,7 +375,7 @@ function loadUserByline() {
 	}
 	else
 		setByline = defaultByline;
-	
+	//gc	
 	candidate = null;
 }
 
@@ -400,7 +390,7 @@ function loadUserHeading() {
 	}
 	else 
 		setHeading = defaultHeading;
-	
+	//gc
 	candidate = null;
 }
 
@@ -440,7 +430,10 @@ function loadUserCopyPara(paraNumber) {
 		default:
 			logger("No loadUserCopyPara found...");
 	}
-	getCopyPara(paraNumber);	
+	getCopyPara(paraNumber);
+
+   //gc
+   candidate = null;
 }
 
 function getCopyPara(paraNumber) {
@@ -512,7 +505,6 @@ function loadDeviceFile() {
 			deviceFilename = deviceFilename.concat(defaultDeviceFile);
 			break;	
 	}
-	logger("deviceFilename 2: " + deviceFilename);
 }
 
 function loadDeviceContent() {	
@@ -535,32 +527,92 @@ function loadDeviceContent() {
 	xmlhttp.send();
 }
 
-function parseForDevice(except) {
+function parseForDevice() {
 	//
+  // TO BE PROPERED
 	// check for set vars before trying to parse them into the device
+	// some Devices per site will NOT require some elements.. need to allow null.
+
+  var element1 = document.getElementById("templateByline");
+  if (element1 === null) {
+    //skip it
+  }
+  else {
+    if (typeof element1 !== "undefined") {
+      if (setByline != null) {   
+        document.getElementById("templateByline").innerHTML = setByline;
+      }
+    }
+  }
 	//
-	// byline
-	if (except!=4) {
-		logger("setByline: " + setByline);
-		document.getElementById("templateByline").innerHTML = setByline;
-	}
-	//
-	// heading - (EOA temp2-title-text)
-	logger("setHeading: " + setHeading); // this retains the entities: &rsquo;
-	document.getElementById("templateHeading").innerHTML = setHeading;
-	
+  var element2 = document.getElementById("templateHeading");
+  if (element2 === null) {
+    //skip it
+    logger("templateHeading null");
+  }
+  else {
+    if (typeof element2 !== "undefined") {
+      if (setHeading != null) {   
+        document.getElementById("templateHeading").innerHTML = setHeading;
+      }
+    }
+  }
 	// reportCover
-	document.getElementById("templateCover").src = setReportCoverUrl;
-	document.getElementById("templateCover").style.width = setCoverWide;
-	document.getElementById("templateCover").style.height = setCoverHigh;
+	if (setReportCoverUrl != null) {
+    document.getElementById("templateCover").src = setReportCoverUrl;
+  }
+	if (setCoverWide != null) {
+    document.getElementById("templateCover").style.width = setCoverWide;
+  }
+  if (setCoverHigh != null) {	
+    document.getElementById("templateCover").style.height = setCoverHigh;
+  }
 	//
 	// each line of text has a <p> </p>
 	//
 	// copyParas
-	document.getElementById("templatePara1").innerHTML = setCopyPara1;
-	document.getElementById("templatePara2").innerHTML = setCopyPara2;
-	document.getElementById("templatePara3").innerHTML = setCopyPara3;
-	//
+  
+  var element3 = document.getElementById("templatePara1");
+  if (element3 === null) {
+    //skip it
+  }
+  else {
+    if (typeof element3 !== "undefined") {
+      if (setCopyPara1 != null) {   
+        document.getElementById("templatePara1").innerHTML = setCopyPara1;
+      }
+    }
+  }  
+
+  var element4 = document.getElementById("templatePara2");
+  if (element4 === null) {
+    //skip it
+  }
+  else {
+    if (typeof element4 !== "undefined") {
+      if (setCopyPara2 != null) {   
+        document.getElementById("templatePara2").innerHTML = setCopyPara2;
+      }
+    }
+  }  
+
+  var element5 = document.getElementById("templatePara3");
+  if (element5 === null) {
+    //skip it
+  }
+  else {
+    if (typeof element5 !== "undefined") {
+      if (setCopyPara3 != null) {   
+        document.getElementById("templatePara3").innerHTML = setCopyPara3;
+      }
+    }
+  }
+  // gc
+  element1 = null;
+  element2 = null;
+  element3 = null;
+  element4 = null;
+  element5 = null;
 }
 
 /**********************************************/
@@ -570,28 +622,23 @@ function parseForDevice(except) {
 function processDeviceToFile() {
 	// get finished device template and content,
 	// save to plaintext file suitable for use
-	// in openX.
-	
+	// in openX.	
 	var contents;
 	contents = document.getElementById(deviceType).innerHTML;
-	
-	//logger("contents: " + contents);
 	//open the plaintext in new window:	
 	plaintextWindow = window.open("OpenX_plaintext.html", 
 				"_blank", 
 				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=900, height=800");
 	plaintextWindow.document.open();
-
 	// get it to not render as html but as visible code
 	// this is where the html entities need to be kept as such
-
 	var safe = "<pre>";
 	safe += contents.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 	safe += "</pre>";
 	plaintextWindow.document.write(safe);
-
-	//plaintextWindow.document.write(document.getElementById(deviceType).innerHTML);
-	
+	//plaintextWindow.document.write(document.getElementById(deviceType).innerHTML);	
 	plaintextWindow.document.close();
+  //gc
+  contents = null;
 }
 
