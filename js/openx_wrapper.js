@@ -46,12 +46,12 @@ var DEVICETYPE_IF = "contentIF";
 // site specific stylesheets
 var MMstyle1url = "http://www.moneymorning.com.au/wp-content/themes/shoestrap-leadgen/style.css";
 var MMstyle2url = "http://www.moneymorning.com.au/wp-content/uploads/ss-style.css?ver=1424233318";
-var MMicon = "MM-icon.jpg";
+var MMicon = "images/MM-icon.jpg";
 
 var DRstyle1url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/style.css";
 var DRstyle2url = "http://dailyreckoning.com.au/css/signupbox.css";
 var DRstyle3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
-var DRicon = "DR-icon.jpg";
+var DRicon = "images/DR-icon.jpg";
 
 // stored version of deviceFile for edits and saves
 var siteVersion = "none";
@@ -135,11 +135,6 @@ function loadSiteStyles() {
   if (localStorage.getItem("siteVersion") !== null) {
     siteVersion = localStorage.getItem("siteVersion");
   }
-  /*
-  if (typeof localStorage.getItem("siteVersion") !== "undefined") {
-    siteVersion = localStorage.getItem("siteVersion");
-  }
-  */
   else {
     siteVersion = "NO";
   }
@@ -652,3 +647,14 @@ function processDeviceToFile() {
   contents = null;
 }
 
+/**********************************************/
+
+// LOAD HELP WINDOW
+
+function openHelpWindow() {
+  helpWindow = window.open("OpenX_wrapper-help.html", 
+				"_blank", 
+				"toolbar=no, scrollbars=yes, resizable=yes, top=100, left=100, width=630, height=800");
+	helpWindow.document.open();
+  
+}

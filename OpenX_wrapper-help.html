@@ -1,0 +1,139 @@
+<!--
+/******************************* 
+*
+* OpenX_wrapper-help.html
+*
+* instructions for program use.
+*
+********************************/
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OpenX_Wrapper::ploise halp me</title>
+  <link rel="stylesheet" href="OpenX_wrapper_overrides.css" type="text/css" media="all" />
+  <style type="text/css">
+    body {
+      font-family: 'Georgia', serif;
+      font-size: 12px;
+    }
+    h1 {
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+    h2 {
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .keyBlock {
+      display: block;
+      float: left;
+    }
+    .lefty {
+      display: block;
+      float: left;
+      width: 120px;
+    }
+    .righty {
+      display: inline-block;
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+<h1>OpenX_Wrapper help and instructions.</h1>
+<br />
+<h2>1. Load website.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help1.jpg" alt="help 1" width="205" height="119"/>
+<br />
+- select either MM (Money Morning) or DR (Daily Reckoning)<br />
+- press button "LOAD site", this will load that site's styles<br />
+<br />
+"RESET form" button will clear all fields.<br />
+"HELP!!" opens this guide in a new window.<br />
+<br />
+<hr>
+<br />
+<h2>2. Site icon.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help2.jpg" alt="help 2" width="210" height="103"/>
+<br />
+- after the chosen site's stylesheets have loaded that site's will icon appear.<br /> 
+<br />
+<hr>
+<br />
+<h2>3. Device type.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help3.jpg" alt="help 3" width="279" height="95"/>
+<br />
+- select either PU (pop up), SF (sidebar form), IF (inline form) or EOA (end of article)<br />
+- press the "load" button to load that openX device with placeholder content<br />
+<br />
+"update" button will load the current device with any content entered into the left side form fields.<br />
+"clear" button will remove the selected device.<br />
+<br />
+<hr>
+<br />
+<h2>4. Process.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help4.jpg" alt="help 4" width="209" height="106"/>
+<br />
+- when the device is ready for use in OpenX, press the "process" button<br />
+- this will open a new window with code suitable for cut and paste into OpenX<br />
+- the start point for copying is declared with: &lt;!-- start of device here --&gt;<br />
+- the end of copying is declared with: &lt;!-- end device --&gt;<br />
+<br />
+n.b. it does not matter if those declarations are included, they will be ignored.<br />
+<br />
+<hr>
+<br />
+<h2>Entry Form.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help6.jpg" alt="help 6" width="403" height="373"/>
+<br />
+- this form has fields for generating a given OpenX device, as per the selections made above.<br />
+- report cover expects an absolute URL, ie. http://www.somesite.com.au/someReportCover.jpg (or .png)<br />
+- the fields marked "w" and "h" are optional width and height values, in pixels (a site default exists)<br />
+- "set heading" refers to the main title of the device, usually appearing in large letters<br />
+- "set byline" refers to an optional, secondary introduction to the device content<br />
+- "set copy para1..." , etc, refer to the main paragraphs of text to be displayed.<br />
+n.b. clearing their form field(s), clears them from being displayed.<br />
+<br />
+<hr>
+<br />
+<h2>Entities.</h2>
+<img style="border: 1px solid #e0e0e0;" src="images/help5.jpg" alt="help 5" width="536" height="133"/>
+<br />
+- to help with correct appearance of text on a webpage, you must use HTML entities<br />
+- listed are some common ones currently in use with OpenX devices<br />
+- <strong>NOTE: with some exceptions, they require an opening tag and a closing tag</strong><br />
+<br />
+KEY:<br />
+<div class="keyBlock">
+<div class="lefty">&lt;br /&gt;</div> <div class="righty">line break, you can use multiple to get extra spaces between paragraphs.</div><br />
+<div class="lefty">&lt;strong&gt;</div> <div class="righty">is used to make any text between the tags appear <strong>bold</strong></div><br />
+<div class="lefty">&lt;em&gt;</div> <div class="righty">is used for <em>italics</em> between tags</div><br />
+<div class="lefty">&amp;hellip;</div> <div class="righty">is used for ellipsis, if, however, you use full stops in a row they may not stay together&hellip;</div><br />
+<div class="lefty">&amp;lsquo;</div> <div class="righty">is for left side, opening quote &lsquo;</div><br />
+<div class="lefty">&amp;rsquo;</div> <div class="righty">is for right side, closing quote and apostrophes if desired &rsquo;</div><br />
+<div class="lefty">&amp;ndash;</div> <div class="righty">is for normal &ndash; dash</div><br />
+<div class="lefty">&amp;mdash;</div> <div class="righty">is for long &mdash; dash</div><br />
+</div>
+<div style="clear:both"></div>
+<div class="keyBlock">
+<br />
+bullet point lists: (unordered means they appear in the order you write them)</div><br />
+<br />
+<div class="lefty">&lt;ul&gt;</div> <div class="righty">starts the (unordered) list</div><br />
+<div class="lefty">&lt;li&gt;</div> <div class="righty">starts an item in the list</div><br />
+<div class="lefty">&lt;/li&gt;</div> <div class="righty">ends that item in the list</div><br />
+<div class="lefty">&lt;/ul&gt;</div> <div class="righty">closes the (unordered) list</div><br />
+</div>
+<br />
+example:<br />
+&lt;ul&gt;<br />
+&nbsp; &lt;li&gt; item 1 &lt;/li&gt;<br />
+&nbsp; &lt;li&gt; item 2 &lt;/li&gt;<br />
+&nbsp; &lt;li&gt; item 3 &lt;/li&gt;<br />
+&lt;/ul&gt;<br />
+</body>
+</html>
