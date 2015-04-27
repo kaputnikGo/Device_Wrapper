@@ -132,7 +132,17 @@ function loadSelectedDevice() {
 function loadSiteStyles() {
 	// depends on siteVersion...
 	// storage may be undefined...
-	siteVersion = localStorage.getItem("siteVersion");
+  if (localStorage.getItem("siteVersion") !== null) {
+    siteVersion = localStorage.getItem("siteVersion");
+  }
+  /*
+  if (typeof localStorage.getItem("siteVersion") !== "undefined") {
+    siteVersion = localStorage.getItem("siteVersion");
+  }
+  */
+  else {
+    siteVersion = "NO";
+  }
 	var style1url, style2url;
 	switch (siteVersion) {
 		case "MM":
@@ -157,8 +167,8 @@ function loadSiteStyles() {
 }
 
 function storeLocal() {
-	loadSiteVersion();
-	localStorage.setItem("siteVersion", siteVersion);
+	loadSiteVersion(); 
+  localStorage.setItem("siteVersion", siteVersion);
 	logger("storing: " + siteVersion);
 }
 
