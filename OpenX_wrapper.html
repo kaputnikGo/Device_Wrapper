@@ -40,22 +40,29 @@
 		location.reload(true);
 	}
 </script>
-<p><em> DO NOT USE Intenet Explorer OUSIDE OF A WEBSERVER </em></p>
+<p><em> DO NOT USE Internet Explorer OUSIDE OF A WEBSERVER </em></p>
 <div class="topper">
 	<div class="btnLeft">
 		<p style="font-size: 16px">1: <span style="font-size: 14; font-style: oblique;">(load website style)</span></p>
     <input id="MM" type="radio" name="siteVersionRadio" value="MM"> MM
 		-|- <input id="DR" type="radio" name="siteVersionRadio" value="DR"> DR
+    -|- <input id="US" type="radio" name="siteVersionRadio" value="US"> user
 		<br />
     <button type="button" onclick="reloadPage()">LOAD site</button>
 		<button type="button" onclick="resetAllLeftFields()">RESET form</button>
+    <br /><em>optional stylesheet loader</em><br />
+    <div style="border: 1px dashed #000000; padding: 2px; background-color: #e0e0e0; margin-bottom: 4px;">
+    <input id="userStyleSheet" type="text" name="userStyleSheet" size="20" maxlength="100" placeholder="http://">
     <br />
-    <button type="button" onclick="openHelpWindow()"> HELP!! </button>
+    <button type="button" onclick="loadUserStyle()">load style</button>
+    </div>
 	</div>
 	<div class="btnRight">
     <p style="font-size: 16px">2: <span style="font-size: 14; font-style: oblique;">(icon confirms site load)</span></p>
 		<img style="margin-left: 36px;" id="siteIconImage" src="images/defaultIcon.png" alt="site icon" width="57" height="57"/>
-	</div>
+    <br /><br />
+    <button type="button" onclick="openHelpWindow()"> HELP!! </button>
+  </div>
 	<div class="deviceControl">
     <div class="btnLeft">
      <p style="font-size: 16px">3: <span style="font-size: 14; font-style: oblique;">(choose device type, load, update)</span></p>
@@ -87,7 +94,11 @@
 &nbsp; &lt;li&gt; list item 2 &lt;/li&gt;
 &lt;/ul&gt; close list </pre>
     </div>
-    
+  </div> 
+  <div id="consoleLogger">
+    <div id="loggerMessage">
+      console logger
+    </div>
   </div>
   
 <div style="clear:both"></div>  
@@ -176,11 +187,13 @@ set copy para3...
 
 <script type="text/javascript">
 	// get stored siteVersion
-	siteVersion = localStorage.getItem("siteVersion");
-	// select it's radio button
-	document.getElementById(siteVersion).checked = true;
-	document.getElementById("siteIconImage").src = siteIcon;
-	logger("html says siteVersion: " + siteVersion);
+	if (localStorage.getItem("siteVersion") !== null) {
+    siteVersion = localStorage.getItem("siteVersion");
+  	// select it's radio button
+    document.getElementById(siteVersion).checked = true;
+    document.getElementById("siteIconImage").src = siteIcon;
+    logger("html says siteVersion: " + siteVersion);
+  }  
 </script>
 
 </body>

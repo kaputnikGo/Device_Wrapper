@@ -69,6 +69,19 @@ pre {
   padding: 4px;
 }
 
+#consoleLogger {
+  display: block;
+  float: right;
+  padding-left: 8px;
+  margin-bottom: 4px;
+  border: 1px solid black;
+  background-color: #000000;
+  color: #00ff00;
+  width: 580px;
+  height: 30px;
+  overflow-y: scroll;
+}
+
 img#siteIconImage {
 	padding: 0;
 	margin: 0;

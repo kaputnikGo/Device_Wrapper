@@ -44,14 +44,10 @@ var DEVICETYPE_SF = "contentSF";
 var DEVICETYPE_IF = "contentIF";
 
 // site specific stylesheets
-var MMstyle1url = "http://www.moneymorning.com.au/wp-content/themes/shoestrap-leadgen/style.css";
-var MMstyle2url = "http://www.moneymorning.com.au/wp-content/uploads/ss-style.css?ver=1424233318";
+var style1url, style2url, style3url;
 var MMicon = "images/MM-icon.jpg";
-
-var DRstyle1url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/style.css";
-var DRstyle2url = "http://dailyreckoning.com.au/css/signupbox.css";
-var DRstyle3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
 var DRicon = "images/DR-icon.jpg";
+var USERicon = "images/userIcon.jpg";
 
 // stored version of deviceFile for edits and saves
 var siteVersion = "none";
@@ -103,7 +99,37 @@ var plaintextWindow;
 function logger(message) {
 	if (DEBUG) {
 		console.log(message);
+    document.getElementById("loggerMessage").innerHTML = "<em>log:</em> " + message;
 	}	
+}
+
+function loadMMstyles() {
+  try {
+    style1url = "http://www.moneymorning.com.au/wp-content/themes/shoestrap-leadgen/style.css";
+    style2url = "http://www.moneymorning.com.au/wp-content/uploads/ss-style.css?ver=1424233318";
+    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
+    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
+    logger("MM styles found.");
+  }
+  catch(e) {
+    logger("Error: MM stylesheets not loaded - " + e.message);
+  }
+}
+
+function loadDRstyles() {
+  try {
+    style1url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/style.css";
+    style2url = "http://dailyreckoning.com.au/css/signupbox.css";
+    style3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
+    // add third DR style, order specific
+    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
+    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
+    document.write('<link rel="stylesheet" href="' + style3url + '" type="text/css" media="all" />');
+    logger("DR styles found.");
+  }
+  catch(e) {
+    logger("Error: DR stylesheets not loaded - " + e.message);
+  }
 }
 
 function loadSiteVersion() {
@@ -138,27 +164,25 @@ function loadSiteStyles() {
   else {
     siteVersion = "NO";
   }
-	var style1url, style2url;
+
 	switch (siteVersion) {
 		case "MM":
-			style1url = MMstyle1url;
-			style2url = MMstyle2url;
+			loadMMstyles();
 			siteIcon = MMicon;
 			break;
 		case "DR":
-			style1url = DRstyle1url;
-			style2url = DRstyle2url;
+			loadDRstyles();
 			siteIcon = DRicon;
-			document.write('<link rel="stylesheet" href="' + DRstyle3url + '" type="text/css" media="all" />');
 			break;
+    case "user":
+      //TO BE IMPLEMENTED
+      siteIcon = USERicon;
+      
 		default:
-			style1url = MMstyle1url;
-			style2url = MMstyle2url;
-			siteIcon = MMicon;
+      // default is for local stylesheet?...or none
+      logger("No stylesheets loaded.");
 			break;
 	} 	
-	document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
-	document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
 }
 
 function storeLocal() {
@@ -168,7 +192,7 @@ function storeLocal() {
 }
 
 function resetAllLeftFields() {
-    document.getElementById("userReportCover").value = "";
+  document.getElementById("userReportCover").value = "";
 	document.getElementById("userCoverWide").value = "";
 	document.getElementById("userCoverHigh").value = "";
 	document.getElementById("userByline").value = "";
@@ -313,12 +337,19 @@ function updateDeviceContent() {
 
 function displayDeviceContent() {
 	// displays the finished device in a new window,
-	// ready for cut n paste into openX	
-	// check have all the content and deviceType	
-	// singular point of naming saveFile
+	// ready for cut n paste into openX
+  // logs a semi useless timestamp, for future versioning?
+  // print the version as human readable date/time at top of output window
+  
 	var timestamp = new Date().getTime();
-	logger(deviceType.concat(timestamp));
+	logger("output process version: " + deviceType + " - " + timestamp);
 	processDeviceToFile();
+}
+
+function loadUserStyle() {
+  //called from form, user loads direct url stylesheet
+  // to override any legacy or superseded styles.
+  
 }
 
 /************************************************************************************/
