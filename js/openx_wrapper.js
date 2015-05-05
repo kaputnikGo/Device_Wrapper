@@ -44,7 +44,9 @@ var DEVICETYPE_SF = "contentSF";
 var DEVICETYPE_IF = "contentIF";
 
 // site specific stylesheets
-var style1url, style2url, style3url;
+var style1url = "blank";
+var style2url = "blank";
+var style3url = "blank";
 var MMicon = "images/MM-icon.jpg";
 var DRicon = "images/DR-icon.jpg";
 var USERicon = "images/userIcon.jpg";
@@ -103,17 +105,38 @@ function logger(message) {
 	}	
 }
 
+function checkValidURL(checkableUrl) {
+  // this function not correct
+  var request = new XMLHttpRequest();  
+  request.open("GET", checkableUrl, true);
+  
+  if (request.readyState === 4){
+    return false;
+  }
+  else if (request.status === 404) {  
+    logger("Error: checking valid url failed - 404: " + checkableUrl);
+    return false;
+  }
+  
+  return true;
+}
+
 function loadMMstyles() {
+  // document is null, hidden from function?
   try {
     style1url = "http://www.moneymorning.com.au/wp-content/themes/shoestrap-leadgen/style.css";
     style2url = "http://www.moneymorning.com.au/wp-content/uploads/ss-style.css?ver=1424233318";
-    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
-    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
-    logger("MM styles found.");
   }
   catch(e) {
     logger("Error: MM stylesheets not loaded - " + e.message);
   }
+  if (checkValidURL(style1url)) {
+    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
+  }
+  if (checkValidURL(style2url)) {
+    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
+  }
+  logger("MM styles found.");
 }
 
 function loadDRstyles() {
@@ -122,14 +145,21 @@ function loadDRstyles() {
     style2url = "http://dailyreckoning.com.au/css/signupbox.css";
     style3url = "http://www.dailyreckoning.com.au/wp-content/themes/zenko/custom.css?ver=4.1.1";
     // add third DR style, order specific
-    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
-    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
-    document.write('<link rel="stylesheet" href="' + style3url + '" type="text/css" media="all" />');
-    logger("DR styles found.");
   }
   catch(e) {
     logger("Error: DR stylesheets not loaded - " + e.message);
+  }  
+    
+  if (checkValidURL(style1url)) {
+    document.write('<link rel="stylesheet" href="' + style1url + '" type="text/css" media="all" />');
   }
+  if (checkValidURL(style2url)) {    
+    document.write('<link rel="stylesheet" href="' + style2url + '" type="text/css" media="all" />');
+  }
+  if (checkValidURL(style3url)) {    
+    document.write('<link rel="stylesheet" href="' + style3url + '" type="text/css" media="all" />');
+  }
+  logger("DR styles found.");
 }
 
 function loadSiteVersion() {
@@ -231,11 +261,7 @@ function hasVarString(checkable) {
 	return checkable != null;
 }
 
-function elementIsDefined(checkable) {
-	// checkable null can equal defined...
-	return (typeof checkable != 'undefined');
-}
-	
+
 
 /************************************************************************************/
 //
@@ -349,6 +375,18 @@ function displayDeviceContent() {
 function loadUserStyle() {
   //called from form, user loads direct url stylesheet
   // to override any legacy or superseded styles.
+  // div element: userStyleSheet
+  var candidate = document.getElementById("userStyleSheet").value;
+	
+  if (candidate == null || candidate == "") {
+		logger("Error: No user style sheet.");
+	}
+	else {
+		// check for valid url here
+		setReportCoverUrl = candidate;
+	}
+	//gc 
+  candidate = null;
   
 }
 
